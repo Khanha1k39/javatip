@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.domain.dto.ResLoginDto;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -25,7 +26,7 @@ public class JwtService {
         this.jwtEncoder = jwtEncoder;
     }
 
-    public String createToken(Authentication authentication) {
+    public String createAccessToken(Authentication authentication) {
         Instant now = Instant.now();
         Instant validity = now.plus(1000*3600*24, ChronoUnit.SECONDS);
 
@@ -34,7 +35,23 @@ public class JwtService {
                 .issuedAt(now)
                 .expiresAt(validity)
                 .subject(authentication.getName())
-                .claim("AUTHORITIES_KEY", authentication
+                .claim("User", authentication
+                )
+                .build();
+
+        JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
+        return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
+    }
+    public String createRefreshToken(String email,ResLoginDto resLoginDto) {
+        Instant now = Instant.now();
+        Instant validity = now.plus(1000*36000*24, ChronoUnit.SECONDS);
+
+        // @formatter:off
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuedAt(now)
+                .expiresAt(validity)
+                .subject(email)
+                .claim("User", resLoginDto.getUserLogin()
                 )
                 .build();
 

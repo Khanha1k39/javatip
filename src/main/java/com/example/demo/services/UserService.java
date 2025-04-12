@@ -38,4 +38,11 @@ public class UserService {
     public boolean existsById(Long id) {
         return this.userRepository.existsById(id);
     }
+    public void updateUserToken(String token,String email) {
+        User user = this.userRepository.getUserByEmail(email);
+        if(user != null) {
+            user.setRefreshToken(token);
+            this.userRepository.save(user);
+        }
+    }
 }
