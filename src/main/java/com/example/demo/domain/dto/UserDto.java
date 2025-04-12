@@ -1,4 +1,4 @@
-package com.example.demo.domain;
+package com.example.demo.domain.dto;
 
 import com.example.demo.utils.enums.GenderEnum;
 import jakarta.persistence.*;
@@ -7,11 +7,8 @@ import lombok.Data;
 import java.time.Instant;
 
 @Data
-@Entity
-@Table(name="users")
-public class User {
+public class UserDto {
     private  String name;
-    private String password;
     private String email;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +19,8 @@ public class User {
     private String address;
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
-    private String refreshToken;
     private Instant created_at;
     private Instant updated_at;
     private String created_by;
     private String updated_by;
-
 }
