@@ -34,13 +34,18 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleUser(@PathVariable Long id) {
+    public void deleUser(@PathVariable Long id) throws BadRequestException {
 //        User user = new User();
 //        user.setEmail("email@email.com");
 //        user.setPassword("password");
 //        user.setName("name");
-         userService.handleDeleteUser(id);
-        return id.toString();
+        boolean isExists=  userService.existsById(id);
+        if(isExists){
+            userService.handleDeleteUser(id);
+
+        }else{
+            throw new BadRequestException("User not found");
+        }
     }
     @GetMapping("")
     public ResponseEntity <List<User> >  handleGetUser() {

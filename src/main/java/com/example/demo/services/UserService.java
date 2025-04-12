@@ -35,5 +35,7 @@ public class UserService {
     public User handleGetUserByEmail (String email) {
         return this.userRepository.getUserByEmail(email);
     }
-
+    public boolean existsById(Long id) {
+        return this.userRepository.existsById(id);
+    }
 }
